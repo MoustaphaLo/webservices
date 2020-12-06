@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "compte")
 public class Compte {
 
-    private int id;
+    private Long id;
     private double solde;
     private double decouvert;
 
@@ -20,12 +20,12 @@ public class Compte {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,6 +46,7 @@ public class Compte {
     public void setDecouvert(double decouvert) {
         this.decouvert = decouvert;
     }
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "agence_code")
     public Agence getAgence() {

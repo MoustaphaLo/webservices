@@ -8,9 +8,13 @@ import java.util.Date;
 public class Client {
 
     @Id
-    private  long id;
+    @GeneratedValue
+    private  Long id;
+
     private String prenom;
+
     private  String nom;
+
     private Date date_naissance;
 
     public Client() {
@@ -22,14 +26,12 @@ public class Client {
         this.nom = nom;
         this.date_naissance = date_naissance;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getId() {
+    @Column(name = "id", nullable = false)
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

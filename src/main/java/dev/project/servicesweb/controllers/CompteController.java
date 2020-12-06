@@ -3,6 +3,7 @@ package dev.project.servicesweb.controllers;
 import dev.project.servicesweb.exceptions.ResourceNotFoundException;
 import dev.project.servicesweb.models.Client;
 import dev.project.servicesweb.models.Compte;
+import dev.project.servicesweb.repositories.ClientRepository;
 import dev.project.servicesweb.repositories.CompteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,13 @@ public class CompteController {
     @Autowired
     private CompteRepository compteRepository;
 
+    private ClientRepository clientRepository;
+    private ClientController clientController;
     @GetMapping("/compte-list")
     public List<Compte> getAllComptes() {return compteRepository.findAll();}
 
     @GetMapping("/compte-list/{id}")
-    public ResponseEntity<Compte> getCompteById(@PathVariable(value = "id") int id) throws ResourceNotFoundException {
+    public ResponseEntity<Compte> getCompteById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Compte compte = compteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found for this id: " + id));
 
         return ResponseEntity.ok().body(compte);
@@ -36,20 +39,21 @@ public class CompteController {
     }
 
     @PutMapping("/compte-list/{id}")
-    public ResponseEntity<Compte> updateCompte(@PathVariable(value = "id") int id, @RequestBody Compte compteDetails) throws ResourceNotFoundException {
+    public ResponseEntity<Compte> updateCompte(@PathVariable(value = "id") Long id, @RequestBody Compte compteDetails) throws ResourceNotFoundException {
         Compte compte = compteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found for this id: "+id));
 
         compte.setSolde(compteDetails.getSolde());
         compte.setDecouvert(compteDetails.getDecouvert());
-        compte.setClient(compteDetails.getClient());
         compte.setAgence(compteDetails.getAgence());
+        compte.setClient(compteDetails.getClient());
+
         final Compte updatedCompte = compteRepository.save(compte);
 
         return ResponseEntity.ok(updatedCompte);
     }
 
     @DeleteMapping("/compte-list/{id}")
-    public Map<String, Boolean> deleteCompte(@PathVariable(value = "id") int id) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteCompte(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Compte compte = compteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found for this id: "+id));
 
         compteRepository.delete(compte);

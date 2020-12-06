@@ -3,6 +3,7 @@ package dev.project.servicesweb.controllers;
 import dev.project.servicesweb.exceptions.ResourceNotFoundException;
 import dev.project.servicesweb.models.Client;
 import dev.project.servicesweb.repositories.ClientRepository;
+import dev.project.servicesweb.repositories.CompteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    private CompteRepository compteRepository;
 
     @GetMapping("/clients-list")
     public List<Client> getAllClients() {
@@ -44,7 +47,6 @@ public class ClientController {
         client.setPrenom(clientDetails.getPrenom());
         client.setNom(clientDetails.getNom());
         client.setDate_naissance(clientDetails.getDate_naissance());
-
         final Client updatedClient = clientRepository.save(client);
 
         return ResponseEntity.ok(updatedClient);
@@ -53,6 +55,7 @@ public class ClientController {
     @DeleteMapping("/clients-list/{id}")
     public Map<String, Boolean> deleteClient(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found for this id: "+id));
+
 
         clientRepository.delete(client);
         Map<String, Boolean> response = new HashMap<>();
