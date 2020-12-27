@@ -47,7 +47,7 @@ public class Compte {
         this.decouvert = decouvert;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "agence_code")
     public Agence getAgence() {
         return agence;

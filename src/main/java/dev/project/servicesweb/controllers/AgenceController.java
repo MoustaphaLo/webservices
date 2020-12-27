@@ -42,7 +42,7 @@ public class AgenceController {
         Agence agence = agenceRepository.findById(code).orElseThrow(() -> new ResourceNotFoundException("Agence not found with code: "+code));
 
         //agence.setCode(agencedetails.getCode());
-        agence.setNom(agencedetails.getNom());
+        agence.setNom_agence(agencedetails.getNom_agence());
         agence.setAddress(agencedetails.getAddress());
         agence.setTelephone(agencedetails.getTelephone());
         final Agence updatedAgence = agenceRepository.save(agence);

@@ -1,9 +1,9 @@
 package dev.project.servicesweb.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "agence")
@@ -11,23 +11,32 @@ public class Agence {
     @Id
     private String code;
 
-    private  String nom;
+    private  String nom_agence;
 
     private String address;
-
     private  String telephone;
 
-    public Agence() {
+    @JsonIgnore
+    @OneToMany(mappedBy = "agence", cascade = {CascadeType.ALL})
+    private List<Compte> comptes;
 
+    public Agence() {
     }
 
-    public Agence(String code, String nom, String address, String telephone) {
+    public List<Compte> getComptes() {
+        return comptes;
+    }
+
+    public void setComptes(List<Compte> comptes) {
+        this.comptes = comptes;
+    }
+
+    public Agence(String code, String nom_agence, String address, String telephone) {
         this.code = code;
-        this.nom = nom;
+        this.nom_agence = nom_agence;
         this.address = address;
         this.telephone = telephone;
     }
-
     @Column(name = "code", nullable = false)
     public String getCode() {
         return code;
@@ -37,14 +46,7 @@ public class Agence {
         this.code = code;
     }
 
-    @Column(name = "nom", nullable = false)
-    public String getNom() {
-        return nom;
-    }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     @Column(name = "address", nullable = false)
     public String getAddress() {
@@ -60,6 +62,15 @@ public class Agence {
         return telephone;
     }
 
+    @Column(name = "nom_agence", nullable = false)
+    public String getNom_agence() {
+        return nom_agence;
+    }
+
+    public void setNom_agence(String nom_agence) {
+        this.nom_agence = nom_agence;
+    }
+
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
@@ -68,7 +79,7 @@ public class Agence {
     public String toString() {
         return "Agence{" +
                 "code='" + code + '\'' +
-                ", nom='" + nom + '\'' +
+                ", nom='" + nom_agence + '\'' +
                 ", address='" + address + '\'' +
                 ", telephone='" + telephone + '\'' +
                 '}';
